@@ -28,7 +28,7 @@
     android:layout_marginEnd="15dp"
     android:padding="15dp"
     android:clickable="false"
-    android:background="@drawable/tenx_card_middle"
+    android:background="@drawable/everest_card_middle"
     android:orientation="horizontal">
 
     <LinearLayout
