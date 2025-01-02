@@ -20,5 +20,5 @@
     <color name="search_bar_background">?androidprv:attr/materialColorSurfaceContainerHigh</color>
 
     <!-- Ripple effect color -->
-    <color name="tenx_pref_ripple">@android:color/system_accent1_200</color>
+    <color name="everest_pref_ripple">@android:color/system_accent1_200</color>
 </resources>

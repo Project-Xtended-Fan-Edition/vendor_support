@@ -16,7 +16,7 @@
 -->
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.tenx.support">
+    package="com.android.settings">
 
     <uses-sdk
         android:minSdkVersion="27" />
