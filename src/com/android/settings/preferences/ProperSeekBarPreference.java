@@ -35,7 +35,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.settings.R;
-import com.android.settings.util.Utils;
+import com.android.settings.utils.Utils;
 
 public class ProperSeekBarPreference extends Preference implements SeekBar.OnSeekBarChangeListener,
         View.OnClickListener, View.OnLongClickListener {

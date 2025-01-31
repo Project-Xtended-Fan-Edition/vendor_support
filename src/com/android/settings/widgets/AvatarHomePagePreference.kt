@@ -27,7 +27,7 @@ import android.view.View
 import android.widget.ImageView
 import androidx.preference.PreferenceViewHolder
 import com.android.settings.R
-import com.android.settings.util.UserUtils
+import com.android.settings.utils.UserUtils
 
 /** A customized layout for homepage preference. */
 class AvatarHomePagePreference @JvmOverloads constructor(
