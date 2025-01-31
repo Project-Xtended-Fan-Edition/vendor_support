@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.android.settings.util
+package com.android.settings.utils
 
 import android.content.Context
 import android.database.ContentObserver
@@ -27,7 +27,7 @@ import java.util.Calendar
 import java.util.Locale
 
 import com.android.settings.R
-import com.android.settings.util.UserUtils
+import com.android.settings.utils.UserUtils
 
 class SettingsDashboardTextView @JvmOverloads constructor(
     context: Context,

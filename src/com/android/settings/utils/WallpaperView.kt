@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.android.settings.util
+package com.android.settings.utils
 
 import android.app.WallpaperManager
 import android.content.Context
