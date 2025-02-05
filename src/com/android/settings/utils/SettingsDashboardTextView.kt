@@ -122,18 +122,28 @@ class SettingsDashboardTextView @JvmOverloads constructor(
     private fun updateMessageBasedOnTime() {
         val dashboardGreetings = Settings.System.getInt(context.contentResolver, "dashboard_greetings", 0)
         if (dashboardGreetings != 1) {
+            // Use DefaultHomepageTitleText when greetings are disabled
             text = context.getString(R.string.dashboard_title)
             homepageTitle?.text = ""
+            setTextAppearance(R.style.DefaultHomepageTitleText)
             return
         }
 
         val username = getUserName()
+        val greeting = "${getGreetingBasedOnTime()} $username,"
         
-        // Set the greeting text
-        text = "${getGreetingBasedOnTime()} $username,"
-        
-        // Set random message in homepage title
+        // Set text appearance for greeting line
+        setTextAppearance(R.style.HomepageTitleText)
+        text = greeting
+
+        // Set the random message with its style
         val messages = getMessagesBasedOnTime()
-        homepageTitle?.text = messages.random()
+        val randomMessage = messages.random()
+        
+        // Update homepageTitle with the random message and its style
+        homepageTitle?.let {
+            it.setTextAppearance(R.style.HomepageSubTitleText)
+            it.text = randomMessage
+        }
     }
 }
