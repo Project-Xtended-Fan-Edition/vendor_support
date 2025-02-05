@@ -23,7 +23,6 @@ import android.os.Handler
 import android.os.UserHandle
 import android.provider.Settings
 import android.util.AttributeSet
-import android.view.View
 import android.widget.ImageView
 import androidx.preference.PreferenceViewHolder
 import com.android.settings.R
@@ -39,7 +38,6 @@ class AvatarHomePagePreference @JvmOverloads constructor(
     HomepagePreferenceLayoutHelper.HomepagePreferenceLayout {
 
     private var avatarIcon: ImageView? = null
-    private var userCard: View? = null
     private val userUtils: UserUtils = UserUtils.getInstance(context)
 
     private val handler = Handler()
@@ -72,11 +70,8 @@ class AvatarHomePagePreference @JvmOverloads constructor(
         if (!isVisible) return
 
         avatarIcon = holder.findViewById(R.id.user_avatar) as ImageView
-        userCard = holder.findViewById(R.id.user_card_holder)
-
         avatarIcon?.let { userUtils.setClick(it) }
-        userCard?.let { userUtils.setClick(it) }
-
+        
         holder.itemView.post {
             val userName = userUtils.getUserName()
             if (userName != null && userName != title) {
