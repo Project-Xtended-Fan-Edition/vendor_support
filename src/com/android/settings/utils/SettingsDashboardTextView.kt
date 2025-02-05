@@ -19,15 +19,16 @@ import android.content.Context
 import android.database.ContentObserver
 import android.os.Handler
 import android.os.Looper
+import android.os.UserHandle
+import android.os.UserManager
 import android.provider.Settings
 import android.util.AttributeSet
 import android.widget.TextView
-import java.text.SimpleDateFormat
 import java.util.Calendar
-import java.util.Locale
+import java.util.Random
 
 import com.android.settings.R
-import com.android.settings.utils.UserUtils
+import com.android.settings.Utils
 
 class SettingsDashboardTextView @JvmOverloads constructor(
     context: Context,
@@ -37,15 +38,7 @@ class SettingsDashboardTextView @JvmOverloads constructor(
 
     private val handler = Handler(Looper.getMainLooper())
     private var updateInterval = 15000L
-
-    private val midnightMessages = context.resources.getStringArray(R.array.dashboard_midnight)
-    private val morningMessages = context.resources.getStringArray(R.array.dashboard_morning)
-    private val randomMessages = context.resources.getStringArray(R.array.dashboard_random)
-    private val noonMessages = context.resources.getStringArray(R.array.dashboard_noon)
-    private val earlyNightMessages = context.resources.getStringArray(R.array.dashboard_early_night)
-    private val nightMessages = context.resources.getStringArray(R.array.dashboard_night)
-
-    private val timeFormat = SimpleDateFormat("HH", Locale.getDefault())
+    private var homepageTitle: TextView? = null
 
     private val updateTextRunnable = object : Runnable {
         override fun run() {
@@ -59,6 +52,11 @@ class SettingsDashboardTextView @JvmOverloads constructor(
             super.onChange(selfChange)
             updateMessageBasedOnTime()
         }
+    }
+
+    fun setAssociatedViews(homepageTitle: TextView) {
+        this.homepageTitle = homepageTitle
+        updateMessageBasedOnTime()
     }
 
     override fun onAttachedToWindow() {
@@ -85,26 +83,57 @@ class SettingsDashboardTextView @JvmOverloads constructor(
         handler.removeCallbacks(updateTextRunnable)
     }
 
+    private fun getUserName(): String {
+        val userManager = context.getSystemService(Context.USER_SERVICE) as UserManager
+        val userInfo = Utils.getExistingUser(userManager, UserHandle.of(UserHandle.myUserId()))
+        val fullName = userInfo.name ?: context.getString(R.string.default_user)
+        val nameParts = fullName.split("\\s+".toRegex())
+        return if (nameParts.isNotEmpty()) {
+            nameParts[0]
+        } else {
+            context.getString(R.string.default_user)
+        }
+    }
+
+    private fun getMessagesBasedOnTime(): Array<String> {
+        return when (Calendar.getInstance().get(Calendar.HOUR_OF_DAY)) {
+            in 5..11 -> context.resources.getStringArray(R.array.dashboard_morning)
+            in 12..17 -> context.resources.getStringArray(R.array.dashboard_daytime)
+            in 18..21 -> context.resources.getStringArray(R.array.dashboard_evening)
+            else -> context.resources.getStringArray(R.array.dashboard_night)
+        }
+    }
+
+    private fun getGreetingBasedOnTime(): String {
+        val greetings = context.resources.getStringArray(R.array.dashboard_greetings)
+        
+        if (Random().nextFloat() < 0.4) {
+            return greetings[4] // Namaste
+        }
+
+        return when (Calendar.getInstance().get(Calendar.HOUR_OF_DAY)) {
+            in 5..11 -> greetings[0]  // Good morning
+            in 12..17 -> greetings[1] // Hello
+            in 18..21 -> greetings[2] // Good evening
+            else -> greetings[3]      // Good night
+        }
+    }
+
     private fun updateMessageBasedOnTime() {
         val dashboardGreetings = Settings.System.getInt(context.contentResolver, "dashboard_greetings", 0)
         if (dashboardGreetings != 1) {
             text = context.getString(R.string.dashboard_title)
+            homepageTitle?.text = ""
             return
         }
-        val username = UserUtils.getInstance(context).getUserName()
-        val currentHour = timeFormat.format(Calendar.getInstance().time).toInt()
-        val message = when (currentHour) {
-            in 0..4 -> midnightMessages.random()
-            in 5..11 -> morningMessages.random()
-            in 12..13 -> noonMessages.random()
-            in 14..16 -> randomMessages.random()
-            in 17..20 -> earlyNightMessages.random()
-            else -> nightMessages.random()
-        }
-        text = if (message.contains("%s")) {
-            String.format(message, username)
-        } else {
-            message
-        }
+
+        val username = getUserName()
+        
+        // Set the greeting text
+        text = "${getGreetingBasedOnTime()} $username,"
+        
+        // Set random message in homepage title
+        val messages = getMessagesBasedOnTime()
+        homepageTitle?.text = messages.random()
     }
 }
