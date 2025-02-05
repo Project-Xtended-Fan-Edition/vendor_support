@@ -22,6 +22,9 @@ import android.os.Looper
 import android.os.UserHandle
 import android.os.UserManager
 import android.provider.Settings
+import android.text.Spannable
+import android.text.SpannableString
+import android.text.style.TextAppearanceSpan
 import android.util.AttributeSet
 import android.widget.TextView
 import java.util.Calendar
@@ -38,7 +41,6 @@ class SettingsDashboardTextView @JvmOverloads constructor(
 
     private val handler = Handler(Looper.getMainLooper())
     private var updateInterval = 15000L
-    private var homepageTitle: TextView? = null
 
     private val updateTextRunnable = object : Runnable {
         override fun run() {
@@ -52,11 +54,6 @@ class SettingsDashboardTextView @JvmOverloads constructor(
             super.onChange(selfChange)
             updateMessageBasedOnTime()
         }
-    }
-
-    fun setAssociatedViews(homepageTitle: TextView) {
-        this.homepageTitle = homepageTitle
-        updateMessageBasedOnTime()
     }
 
     override fun onAttachedToWindow() {
@@ -124,26 +121,34 @@ class SettingsDashboardTextView @JvmOverloads constructor(
         if (dashboardGreetings != 1) {
             // Use DefaultHomepageTitleText when greetings are disabled
             text = context.getString(R.string.dashboard_title)
-            homepageTitle?.text = ""
             setTextAppearance(R.style.DefaultHomepageTitleText)
             return
         }
 
         val username = getUserName()
         val greeting = "${getGreetingBasedOnTime()} $username,"
-        
-        // Set text appearance for greeting line
-        setTextAppearance(R.style.HomepageTitleText)
-        text = greeting
-
-        // Set the random message with its style
         val messages = getMessagesBasedOnTime()
         val randomMessage = messages.random()
-        
-        // Update homepageTitle with the random message and its style
-        homepageTitle?.let {
-            it.setTextAppearance(R.style.HomepageSubTitleText)
-            it.text = randomMessage
-        }
+
+        val fullText = "$greeting\n$randomMessage"
+        val spannableString = SpannableString(fullText)
+
+        // Apply first line style (greeting)
+        spannableString.setSpan(
+            TextAppearanceSpan(context, R.style.HomepageTitleText), 
+            0, 
+            greeting.length, 
+            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+        )
+
+        // Apply second line style (random message)
+        spannableString.setSpan(
+            TextAppearanceSpan(context, R.style.HomepageSubTitleText), 
+            greeting.length + 1, 
+            fullText.length, 
+            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+        )
+
+        text = spannableString
     }
 }
