@@ -25,25 +25,18 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/x_preference_category_background"
-        android:layout_marginStart="20dp"
+        android:layout_marginStart="0.0dip"
         android:paddingLeft="15dp"
         android:paddingRight="15dp"
-        android:paddingTop="5dp"
-        android:paddingBottom="8dp">
-
-        <ImageView
-            android:id="@+id/dot"
-            android:layout_width="6dp"
-            android:layout_height="6dp"
-            android:layout_gravity="center"
-            android:src="@drawable/ic_dot" />
+        android:paddingTop="2dp"
+        android:paddingBottom="4dp">
 
         <TextView
             android:id="@android:id/title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
-            android:textSize="16sp"
+            android:textSize="15sp"
             android:textStyle="bold"
             android:layout_gravity="center"
             android:textColor="?android:attr/colorAccent" />

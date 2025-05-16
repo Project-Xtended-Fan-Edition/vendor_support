@@ -20,14 +20,14 @@
         <shape>
             <solid android:color="#FFFFFFFF" />
             <corners
-                android:radius="20dp" />
+                android:radius="24dp" />
         </shape>
     </item>
     <item android:id="@android:id/background">
         <shape android:shape="rectangle">
             <solid android:color="@color/search_bar_background" />
             <corners
-                android:radius="20dp" />
+                android:radius="24dp" />
         </shape>
     </item>
 </ripple>

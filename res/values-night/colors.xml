@@ -17,7 +17,7 @@
 <resources
     xmlns:androidprv="http://schemas.android.com/apk/prv/res/android">
 
-    <color name="search_bar_background">?androidprv:attr/materialColorSurfaceContainerHigh</color>
+    <color name="search_bar_background">@androidprv:color/materialColorSurfaceContainerHigh</color>
 
     <!-- Ripple effect color -->
     <color name="x_pref_ripple">@android:color/system_accent1_200</color>

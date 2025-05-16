@@ -20,7 +20,7 @@
     <color name="disabled_text_color">#66000000</color>
 
     <!-- Search bar background color -->
-    <color name="search_bar_background">?androidprv:attr/materialColorSurfaceBright</color>
+    <color name="search_bar_background">@androidprv:color/materialColorSurfaceBright</color>
     
     <!-- Ripple effect color -->
     <color name="x_pref_ripple">@android:color/system_accent1_500</color>
